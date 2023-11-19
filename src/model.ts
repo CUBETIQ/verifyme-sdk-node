@@ -5,8 +5,10 @@ enum Provider {
     Email = 'email',
 }
 
+type ProviderType = 'telegram' | 'verifybot' | 'sms' | 'email';
+
 class CreateVerifyRequest {
-    provider?: Provider; // telegram, verifybot, sms, email
+    provider?: Provider | ProviderType | string; // telegram, verifybot, sms, email
     target?: string; // phone, email, telegram chat id, etc.
     timeout?: number; // in seconds (default: 60) for code to expire
     template?: string; // template message with {{code}} placeholder
@@ -17,7 +19,7 @@ class CreateVerifyRequest {
         timeout,
         template,
     }: {
-        provider?: Provider;
+        provider?: Provider | ProviderType | string;
         target?: string;
         timeout?: number;
         template?: string;
@@ -47,14 +49,14 @@ class CreateVerifyRequest {
 }
 
 class CreateVerifyRequestBuilder {
-    private _provider?: Provider;
+    private _provider?: Provider | ProviderType | string;
     private _target?: string;
     private _timeout?: number;
     private _template?: string;
 
     constructor() { }
 
-    provider(provider: Provider | undefined): CreateVerifyRequestBuilder {
+    provider(provider: Provider | ProviderType | string | undefined): CreateVerifyRequestBuilder {
         this._provider = provider;
         return this;
     }
