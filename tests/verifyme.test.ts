@@ -1,4 +1,4 @@
-import { CreateVerifyRequest, Provider, VerifyMessageRequest, Verifyme, VerifymeOptions } from '../src/index';
+import { CreateVerifyRequest, VerifyMessageRequest, Verifyme, VerifymeOptions } from '../src/index';
 
 const API_KEY = 'vm_gX9WwSdKatMNdpUClLU0IfCx575tvdoeQ'
 
@@ -14,8 +14,8 @@ test('Verifyme sdk should be defined', () => {
 
 test('Verifyme sdk should be able to create a verify code and send to the target', async () => {
     const request = CreateVerifyRequest.builder()
-        .provider(Provider.VerifyBot)
-        .target('YOUR-CHAT-ID')
+        .provider("email")
+        .target('sombochea100@gmail.com')
         .template('Your verification code is {{code}}')
         .build();
 

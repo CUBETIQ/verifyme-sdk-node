@@ -30,19 +30,6 @@ class CreateVerifyRequest {
         this.template = template;
     }
 
-    toMap(): Record<string, any> {
-        return {
-            provider: this.provider,
-            target: this.target,
-            timeout: this.timeout,
-            template: this.template,
-        };
-    }
-
-    toJson(): string {
-        return JSON.stringify(this.toMap());
-    }
-
     static builder(): CreateVerifyRequestBuilder {
         return new CreateVerifyRequestBuilder();
     }
@@ -115,17 +102,6 @@ class VerifyMessageRequest {
     }) {
         this.token = token;
         this.code = code;
-    }
-
-    toMap(): Record<string, any> {
-        return {
-            token: this.token,
-            code: this.code,
-        };
-    }
-
-    toJson(): string {
-        return JSON.stringify(this.toMap());
     }
 
     static builder(): VerifyMessageRequestBuilder {
@@ -235,6 +211,7 @@ class VerifymeOptionsBuilder {
 
 export {
     Provider,
+    ProviderType,
     CreateVerifyRequest,
     CreateVerifyRequestBuilder,
     CreateVerifyResponse,

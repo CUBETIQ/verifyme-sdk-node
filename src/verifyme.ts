@@ -46,7 +46,7 @@ export class Verifyme {
             'User-Agent': userAgent,
         };
 
-        const response = await this._service.send(request.toMap(), headers, this._options.connectionTimeout ?? Verifyme.DEFAULT_CONNECT_TIMEOUT);
+        const response = await this._service.send(request, headers, this._options.connectionTimeout ?? Verifyme.DEFAULT_CONNECT_TIMEOUT);
         return response;
     }
 
