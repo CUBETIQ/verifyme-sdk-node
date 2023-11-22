@@ -41,9 +41,11 @@ class CreateVerifyRequestBuilder {
     private _timeout?: number;
     private _template?: string;
 
-    constructor() { }
+    constructor() {}
 
-    provider(provider: Provider | ProviderType | string | undefined): CreateVerifyRequestBuilder {
+    provider(
+        provider: Provider | ProviderType | string | undefined
+    ): CreateVerifyRequestBuilder {
         this._provider = provider;
         return this;
     }
@@ -74,18 +76,22 @@ class CreateVerifyRequestBuilder {
 }
 
 class CreateVerifyResponse {
-    token: string;
-    exp: number;
+    token?: string;
+    exp?: number;
+    error?: string;
 
     constructor({
         token,
         exp,
+        error,
     }: {
-        token: string;
-        exp: number;
+        token?: string;
+        exp?: number;
+        error?: string;
     }) {
         this.token = token;
         this.exp = exp;
+        this.error = error;
     }
 }
 
@@ -93,13 +99,7 @@ class VerifyMessageRequest {
     token: string;
     code: string;
 
-    constructor({
-        token,
-        code,
-    }: {
-        token: string;
-        code: string;
-    }) {
+    constructor({ token, code }: { token: string; code: string }) {
         this.token = token;
         this.code = code;
     }
@@ -113,7 +113,7 @@ class VerifyMessageRequestBuilder {
     private _token?: string;
     private _code?: string;
 
-    constructor() { }
+    constructor() {}
 
     token(token: string | undefined): VerifyMessageRequestBuilder {
         this._token = token;
@@ -182,7 +182,7 @@ class VerifymeOptionsBuilder {
     private _apiKey?: string;
     private _connectionTimeout?: number;
 
-    constructor() { }
+    constructor() {}
 
     url(url: string | undefined): VerifymeOptionsBuilder {
         this._url = url;
@@ -194,7 +194,9 @@ class VerifymeOptionsBuilder {
         return this;
     }
 
-    connectionTimeout(connectionTimeout: number | undefined): VerifymeOptionsBuilder {
+    connectionTimeout(
+        connectionTimeout: number | undefined
+    ): VerifymeOptionsBuilder {
         this._connectionTimeout = connectionTimeout;
         return this;
     }
@@ -208,7 +210,6 @@ class VerifymeOptionsBuilder {
     }
 }
 
-
 export {
     Provider,
     ProviderType,
@@ -220,4 +221,4 @@ export {
     VerifyMessageRequest,
     VerifyMessageRequestBuilder,
     VerifyMessageResponse,
-}
+};

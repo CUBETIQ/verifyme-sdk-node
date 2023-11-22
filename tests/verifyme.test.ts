@@ -34,6 +34,28 @@ test('Verifyme sdk should be able to create a verify code and send to the target
     expect(response.token).not.toBe('');
 })
 
+test('Verifyme sdk should be able to create a verify code and send to the target with error', async () => {
+    const request = CreateVerifyRequest.builder()
+        .provider("verifybot")
+        .target('+85510101010')
+        .template('Your verification code is {{code}}')
+        .build();
+
+    const response = await sdk.send(request);
+    console.log("Request: ", request);
+    console.log("Response: ", response);
+
+    expect(request.provider).toBeDefined();
+    expect(request.provider).not.toBeNull();
+    expect(request.target).toBeDefined();
+    expect(request.target).not.toBeNull();
+
+    expect(response).toBeDefined();
+    expect(response.error).toBeDefined();
+    expect(response.error).not.toBeNull();
+    expect(response.error).not.toBe('');
+})
+
 test('Verifyme sdk should be able to verify with token and code', async () => {
     const request = VerifyMessageRequest.builder()
         .token('5914b15eca02f53d5c0ae8f04a221c98c0813271346c2092021df56de9aa9fd4')

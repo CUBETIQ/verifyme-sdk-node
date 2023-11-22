@@ -5,8 +5,8 @@ import { getSystemHostname, getSystemUsername } from "./util";
 export class Verifyme {
     private static readonly _logger = console;
     private static readonly NAME = 'verifyme';
-    private static readonly VERSION = '0.0.1';
-    private static readonly VERSION_CODE = '1';
+    private static readonly VERSION = '0.0.4';
+    private static readonly VERSION_CODE = '2';
     private static readonly DEFAULT_URL = 'https://verifyme-api.cubetiq.app';
     private static readonly API_KEY_HEADER_PREFIX = 'x-api-key';
     private static readonly DEFAULT_CONNECT_TIMEOUT = 60; // seconds

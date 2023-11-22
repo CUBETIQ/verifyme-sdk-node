@@ -8,7 +8,11 @@ class VerifymeService {
         this.url = `${baseUrl}/api/v1/verify`;
     }
 
-    async send(body: any, headers?: any, timeout?: number): Promise<CreateVerifyResponse> {
+    async send(
+        body: any,
+        headers?: any,
+        timeout?: number
+    ): Promise<CreateVerifyResponse> {
         const config: AxiosRequestConfig = {
             method: 'POST',
             url: this.url,
@@ -17,22 +21,36 @@ class VerifymeService {
             timeout: timeout ? timeout * 1000 : undefined,
         };
 
-        const response = await axios(config);
+        return axios(config)
+            .then((response) => response.data)
+            .catch((error) => {
+                if (error.response) {
+                    console.debug(
+                        `Send Error: ${JSON.stringify(error.response.data)}`
+                    );
 
-        if (
-            response.status === 200 ||
-            response.status === 201 ||
-            response.status === 202
-        ) {
-            return await response.data;
-        } else {
-            throw new Error(
-                `Failed to post data to verifyme server with status code: ${response.status} and message: ${response.statusText}`
-            );
-        }
+                    return {
+                        ...error.response.data,
+                    };
+                } else if (error.request) {
+                    console.debug(`Send Error: ${JSON.stringify(error.request)}`);
+
+                    return {
+                        error: error.request,
+                    };
+                }
+
+                return {
+                    error: error?.message ?? 'Unknown error',
+                };
+            });
     }
 
-    async verify(body: any, headers?: any, timeout?: number): Promise<VerifyMessageResponse> {
+    async verify(
+        body: any,
+        headers?: any,
+        timeout?: number
+    ): Promise<VerifyMessageResponse> {
         const config: AxiosRequestConfig = {
             method: 'POST',
             url: `${this.url}/check`,
@@ -41,21 +59,32 @@ class VerifymeService {
             timeout: timeout ? timeout * 1000 : undefined,
         };
 
-        const response = await axios(config);
+        return axios(config)
+            .then((response) => response.data)
+            .catch((error) => {
+                if (error.response) {
+                    console.debug(
+                        `Verify Error: ${JSON.stringify(error.response.data)}`
+                    );
 
-        if (
-            response.status === 200 ||
-            response.status === 201 ||
-            response.status === 202
-        ) {
-            return await response.data;
-        } else {
-            throw new Error(
-                `Failed to post data to verifyme server with status code: ${response.status} and message: ${response.statusText}`
-            );
-        }
+                    return {
+                        ...error.response.data,
+                    };
+                } else if (error.request) {
+                    console.debug(
+                        `Verify Error: ${JSON.stringify(error.request)}`
+                    );
+
+                    return {
+                        error: error.request,
+                    };
+                }
+
+                return {
+                    error: error?.message ?? 'Unknown error',
+                };
+            });
     }
 }
-
 
 export { VerifymeService };

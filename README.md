@@ -5,6 +5,12 @@ A simple way to send and verify verification code with SMS, Email, Telegram and 
 -   [x] Send verify code
 -   [x] Verify a code
 
+## Supported Providers
+
+-   [x] Telegram / VerifyBot (`telegram` or `verifybot`)
+-   [x] SMS (Twilio, `sms`)
+-   [x] Email (`email`)
+
 ## Usages
 
 -   Create a verify message and send it to the target

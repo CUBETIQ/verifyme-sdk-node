@@ -1,6 +1,6 @@
 {
   "name": "@cubetiq/verifyme",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A simple way to send and verify verification code with SMS, Email, Telegram and etc.",
   "main": "dist/index.js",
   "private": false,
