@@ -2,8 +2,9 @@
 
 A simple way to send and verify verification code with SMS, Email, Telegram and etc.
 
--   [x] Send verify code
--   [x] Verify a code
+-   [x] Send verify code.
+-   [x] Verify a code.
+-   [x] VerifyBotAuth.
 
 ## Supported Providers
 
@@ -13,11 +14,12 @@ A simple way to send and verify verification code with SMS, Email, Telegram and 
 
 ## Usages
 
--   Create a verify message and send it to the target
+### Verify Feature
+
+-   Create a verify message and send it to the target.
 
 ```typescript
 const API_KEY = 'vm_gX9WwSdKatMNdpUClLU0IfCx575tvdoeQ';
-
 const sdk = Verifyme.create(VerifymeOptions.builder().apiKey(API_KEY).build());
 
 const request = CreateVerifyRequest.builder()
@@ -31,7 +33,7 @@ console.log('Request: ', request);
 console.log('Response: ', response);
 ```
 
--   Verify the message
+-   Verify the message.
 
 ```typescript
 const request = VerifyMessageRequest.builder()
@@ -42,6 +44,32 @@ const request = VerifyMessageRequest.builder()
 const response = await sdk.verify(request);
 console.log('Request: ', request);
 console.log('Response: ', response);
+```
+
+### VerifyBotAuth Feature
+
+-   Create an auth state request with the target.
+
+```typescript
+const API_KEY = 'vm_gX9WwSdKatMNdpUClLU0IfCx575tvdoeQ';
+const sdk = Verifyme.create(VerifymeOptions.builder().apiKey(API_KEY).build());
+
+const request: VerifyBotAuthCreate = {
+    target: '+855769995149',
+    type: 'telegram_bot',
+};
+
+const response = await sdk.botAuth().auth(request);
+console.log('Request: ', request);
+console.log('Response: ', response);
+```
+
+-   Get the auth state.
+
+```typescript
+const result = await sdk.botAuth().state(response.state!);
+console.log('State: ', state);
+console.log('Result: ', result);
 ```
 
 ### Contributors

@@ -7,6 +7,9 @@ enum Provider {
 
 type ProviderType = 'telegram' | 'verifybot' | 'sms' | 'email';
 
+export type VerifyBotAuthType = 'telegram_bot' | 'qr_code';
+export type VerifyBotAuthStatus = 'pending' | 'verified' | 'expired' | 'rejected';
+
 class CreateVerifyRequest {
     provider?: Provider | ProviderType | string; // telegram, verifybot, sms, email
     target?: string; // phone, email, telegram chat id, etc.
@@ -41,7 +44,7 @@ class CreateVerifyRequestBuilder {
     private _timeout?: number;
     private _template?: string;
 
-    constructor() {}
+    constructor() { }
 
     provider(
         provider: Provider | ProviderType | string | undefined
@@ -113,7 +116,7 @@ class VerifyMessageRequestBuilder {
     private _token?: string;
     private _code?: string;
 
-    constructor() {}
+    constructor() { }
 
     token(token: string | undefined): VerifyMessageRequestBuilder {
         this._token = token;
@@ -182,7 +185,7 @@ class VerifymeOptionsBuilder {
     private _apiKey?: string;
     private _connectionTimeout?: number;
 
-    constructor() {}
+    constructor() { }
 
     url(url: string | undefined): VerifymeOptionsBuilder {
         this._url = url;
@@ -208,6 +211,65 @@ class VerifymeOptionsBuilder {
             connectionTimeout: this._connectionTimeout,
         });
     }
+}
+
+export class VerifyBotAuthCreate {
+    target?: string;
+    type?: VerifyBotAuthType | string;
+
+    constructor({
+        target,
+        type,
+    }: {
+        target?: string;
+        type?: VerifyBotAuthType | string;
+    }) {
+        this.target = target;
+        this.type = type;
+    }
+
+    static builder(): VerifyBotAuthCreateBuilder {
+        return new VerifyBotAuthCreateBuilder();
+    }
+}
+
+export class VerifyBotAuthCreateBuilder {
+    private _target?: string;
+    private _type?: VerifyBotAuthType | string;
+
+    constructor() { }
+
+    target(target: string | undefined): VerifyBotAuthCreateBuilder {
+        this._target = target;
+        return this;
+    }
+
+    type(type: VerifyBotAuthType | string | undefined): VerifyBotAuthCreateBuilder {
+        this._type = type;
+        return this;
+    }
+
+    build(): VerifyBotAuthCreate {
+        return new VerifyBotAuthCreate({
+            target: this._target,
+            type: this._type,
+        });
+    }
+}
+
+export interface VerifyBotAuthCreated {
+    state?: string;
+    exp?: number;
+    link?: string;
+    qr_link?: string;
+    error?: string;
+}
+
+export interface VerifyBotAuthGetState {
+    target?: string;
+    status?: VerifyBotAuthStatus | string;
+    data?: any;
+    error?: string;
 }
 
 export {

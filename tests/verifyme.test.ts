@@ -1,4 +1,4 @@
-import { CreateVerifyRequest, VerifyMessageRequest, Verifyme, VerifymeOptions } from '../src/index';
+import { CreateVerifyRequest, VerifyBotAuthCreate, VerifyMessageRequest, Verifyme, VerifymeOptions } from '../src/index';
 
 const API_KEY = 'vm_gX9WwSdKatMNdpUClLU0IfCx575tvdoeQ'
 
@@ -11,6 +11,10 @@ const sdk = Verifyme.create(
 test('Verifyme sdk should be defined', () => {
     expect(sdk).toBeDefined();
 });
+
+test('VerifyBotAuth should be defined', () => {
+    expect(sdk.botAuth()).toBeDefined();
+})
 
 test('Verifyme sdk should be able to create a verify code and send to the target', async () => {
     const request = CreateVerifyRequest.builder()
@@ -76,4 +80,46 @@ test('Verifyme sdk should be able to verify with token and code', async () => {
     // expect(response.success).toBeDefined();
     // expect(response.success).not.toBeNull();
     // expect(response.success).toBe(true);
+})
+
+let state: string | undefined;
+
+test('VerifyBotAuth should be able to create a state', async () => {
+    const request: VerifyBotAuthCreate = {
+        target: '+855769995149',
+        type: 'telegram_bot'
+    }
+
+    const response = await sdk.botAuth().auth(request);
+    console.log("Request: ", request);
+    console.log("Response: ", response);
+
+    expect(request.target).toBeDefined();
+    expect(request.target).not.toBeNull();
+    expect(request.type).toBeDefined();
+    expect(request.type).not.toBeNull();
+
+    expect(response.state).toBeDefined();
+    expect(response.state).not.toBeNull();
+    expect(response.state).not.toBe('');
+
+    state = response.state;
+})
+
+test('VerifyBotAuth should be able to get state', async () => {
+    const result = await sdk.botAuth().state(state!);
+    console.log("State: ", state);
+    console.log("Result: ", result);
+
+    expect(result.target).toBeDefined();
+    expect(result.target).not.toBeNull();
+    expect(result.target).not.toBe('');
+
+    expect(result.status).toBeDefined();
+    expect(result.status).not.toBeNull();
+    expect(result.status).not.toBe('');
+    expect(result.status).toBe('pending');
+
+    expect(result.data).toBeDefined();
+    expect(result.data).toBeNull();
 })

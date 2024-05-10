@@ -1,18 +1,20 @@
 import { CreateVerifyRequest, CreateVerifyResponse, VerifyMessageRequest, VerifyMessageResponse, VerifymeOptions } from "./model";
 import { VerifymeService } from "./service";
 import { getSystemHostname, getSystemUsername } from "./util";
+import { VerifyBotAuth } from "./verifybotauth";
 
 export class Verifyme {
     private static readonly _logger = console;
     private static readonly NAME = 'verifyme';
-    private static readonly VERSION = '0.0.4';
-    private static readonly VERSION_CODE = '2';
+    private static readonly VERSION = '0.1.5';
+    private static readonly VERSION_CODE = '3';
     private static readonly DEFAULT_URL = 'https://verifyme-api.cubetiq.app';
     private static readonly API_KEY_HEADER_PREFIX = 'x-api-key';
     private static readonly DEFAULT_CONNECT_TIMEOUT = 60; // seconds
 
     private _options!: VerifymeOptions;
     private _service!: VerifymeService;
+    private _botAuth!: VerifyBotAuth;
 
     constructor(options: VerifymeOptions) {
         if (!options.apiKey) {
@@ -26,6 +28,9 @@ export class Verifyme {
         // Initialize service
         this._service = new VerifymeService(this._options.url);
 
+        // Initialize bot auth
+        this._botAuth = new VerifyBotAuth(this._service);
+
         Verifyme._logger.log(`[Verifyme] Initialized SDK Version: ${Verifyme.VERSION}-${Verifyme.VERSION_CODE}`);
     }
 
@@ -37,7 +42,7 @@ export class Verifyme {
         const sender = getSystemUsername() ?? 'unknown';
 
         // User agent to request
-        const userAgent = `verifyme-sdk-node/${Verifyme.VERSION}-${Verifyme.VERSION_CODE} (${hostname}:${sender})`;
+        const userAgent = `${Verifyme.NAME}-sdk-node/${Verifyme.VERSION}-${Verifyme.VERSION_CODE} (${hostname}:${sender})`;
         Verifyme._logger.info(`[Verifyme] User agent: ${userAgent}`);
 
         const headers: Record<string, string> = {
@@ -69,6 +74,10 @@ export class Verifyme {
 
         const response = await this._service.verify(request, headers, this._options.connectionTimeout ?? Verifyme.DEFAULT_CONNECT_TIMEOUT);
         return response;
+    }
+
+    botAuth(): VerifyBotAuth {
+        return this._botAuth;
     }
 
     static create(options: VerifymeOptions): Verifyme {
